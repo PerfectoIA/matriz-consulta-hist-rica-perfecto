@@ -22,8 +22,7 @@ def buscar_pasta_anterior(numero_processo: str, df: pd.DataFrame) -> pd.DataFram
             'EMPRESA': '🏢 Empresa',
             'RECLAMADA': '⚖️ Reclamada',
             'RECLAMANTE': '👤 Reclamante',
-            'TIPO CÁLCULO': '📌 Tipo de Prazo',
-            'Origem': '📁 Ano de Origem'
+            'TIPO CÁLCULO': '📌 Tipo de Prazo'
         }
         return resultados[list(colunas_desejadas.keys())].rename(columns=colunas_desejadas)
     else:
@@ -31,17 +30,8 @@ def buscar_pasta_anterior(numero_processo: str, df: pd.DataFrame) -> pd.DataFram
 
 # === Carregamento dos dados ===
 try:
-    excel_data = pd.ExcelFile("base_processos.xlsx")
-    df_2022 = excel_data.parse('consolidação 2022')
-    df_2023 = excel_data.parse('CONSOLIDAÇÃO 2023')
-    df_2024 = excel_data.parse('2024')
-
-    df_2022['Origem'] = '2022'
-    df_2023['Origem'] = '2023'
-    df_2024['Origem'] = '2024'
-
-    df_total = pd.concat([df_2022, df_2023, df_2024], ignore_index=True)
-
+    # Carrega a aba única da nova planilha
+    df_total = pd.read_excel("base_processos.xlsx", sheet_name=0)
     st.success("✅ Base de dados carregada com sucesso!")
 
     st.markdown("<h3 style='color: #222;'>Digite o número do processo para consultar:</h3>", unsafe_allow_html=True)
