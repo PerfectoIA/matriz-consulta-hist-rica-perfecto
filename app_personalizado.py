@@ -24,7 +24,13 @@ def buscar_pasta_anterior(numero_processo: str, df: pd.DataFrame) -> pd.DataFram
             'RECLAMANTE': '👤 Reclamante',
             'TIPO CÁLCULO': '📌 Tipo de Prazo'
         }
-        return resultados[list(colunas_desejadas.keys())].rename(columns=colunas_desejadas)
+        resultados_filtrados = resultados[list(colunas_desejadas.keys())].rename(columns=colunas_desejadas)
+
+        # ✅ Formatar a data como dd/mm/aaaa
+        if '📅 Data da Pasta' in resultados_filtrados.columns:
+            resultados_filtrados['📅 Data da Pasta'] = pd.to_datetime(resultados_filtrados['📅 Data da Pasta'], errors='coerce').dt.strftime('%d/%m/%Y')
+
+        return resultados_filtrados
     else:
         return pd.DataFrame()
 
